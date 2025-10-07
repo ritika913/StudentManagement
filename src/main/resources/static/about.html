@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>About</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      display: flex;
+      height: 100vh;
+    }
+
+    .sidebar {
+      width: 250px;
+      background-color: #2c3e50;
+      color: white;
+      padding: 30px 20px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .sidebar h2 {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .sidebar a {
+      color: white;
+      text-decoration: none;
+      margin: 10px 0;
+      display: block;
+      padding: 10px;
+      border-radius: 5px;
+    }
+
+    .sidebar a:hover {
+      background-color: #34495e;
+    }
+
+    .main {
+      flex: 1;
+      padding: 40px 30px;
+      background: linear-gradient(to right, #83a4d4, #b6fbff);
+      overflow-y: auto;
+    }
+
+    .about-box {
+      background: white;
+      padding: 30px 40px;
+      border-radius: 15px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+      max-width: 800px;
+      margin: auto;
+    }
+
+    h1 {
+      text-align: center;
+      color: #77a4bd;
+      margin-bottom: 20px;
+    }
+
+    p {
+      line-height: 1.7;
+      color: #333;
+      font-size: 16px;
+    }
+
+    @media (max-width: 768px) {
+      body {
+        flex-direction: column;
+      }
+
+      .sidebar {
+        width: 100%;
+        height: auto;
+      }
+
+      .main {
+        padding: 20px;
+      }
+    }
+  </style>
+
+
+  <script>
+    function getCookie(name) {
+      const value = `; ${document.cookie}`;
+      const parts = value.split(`; ${name}=`);
+      if (parts.length === 2) return parts.pop().split(';').shift();
+	  return null;
+    }
+
+    if (getCookie("auth") !== "true") {
+      window.location.href = "login.html";
+    }
+
+	function logout() {
+	  document.cookie.split(";").forEach(cookie => {
+	    const name = cookie.split("=")[0].trim();
+	    document.cookie = name + "=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+	  });
+	  window.location.href = "login.html";
+	}
+
+   
+  </script>
+</head>
+<body>
+
+  <div class="sidebar">
+    <div>
+      <h2>Student Management</h2>
+	  <a href="home.html">Home</a>
+      <a href="add-student.html">Add Student</a>
+      <a href="view.html">View Students</a>
+           
+	  <a href="javascript:void(0)" onclick="logout()">Logout</a>
+
+    </div>
+    <div>
+      <p style="font-size: 12px;">&copy; 2025 Management</p>
+    </div>
+  </div>
+
+  <div class="main">
+    <div class="about-box">
+      <h1>About This Project</h1>
+      <p>
+        The Student Management System is a web-based application designed to simplify the process of managing student records. It allows users to add, view, update, and delete student information easily through a user-friendly interface.
+      </p>
+      <p>
+        Built using <strong>HTML</strong>, <strong>CSS</strong>, <strong>JavaScript</strong>, and powered by a <strong>Spring Boot + MySQL backend</strong>, this system is a complete full-stack solution tailored for academic institutions or administrative users.
+      </p>
+      <p>
+        Features include:
+        <ul>
+          <li>Secure user registration and login</li>
+          <li>Responsive design for desktop and mobile</li>
+          <li>Real-time student data management</li>
+          <li>Clean UI with sidebar navigation</li>
+        </ul>
+      </p>
+      <p>
+        Developed in 2025 by Ritika Rajak. For suggestions or improvements, feel free to contribute or reach out.
+      </p>
+    </div>
+  </div>
+
+</body>
+</html>
