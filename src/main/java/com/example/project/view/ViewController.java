@@ -1,7 +1,6 @@
 package com.example.project.view;
 
 import org.springframework.beans.factory.annotation.Autowired;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,60 +16,72 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 
 import java.util.List;
+import java.util.Optional; // Added for Optional usage
 
+// FIX: Changed base path to /api/views to prevent conflict with StudentController
 @RestController
-@RequestMapping("/api/students")
+@RequestMapping("/api/views") 
 @CrossOrigin(origins = "*")
 public class ViewController {
-
-	public void setRepository(ViewRepository repository) {
-	    this.repository = repository;
-	}
 
     @Autowired
     private ViewRepository repository;
 
+    // Optional setter for testing, but typically not needed for production code
+    public void setRepository(ViewRepository repository) {
+        this.repository = repository;
+    }
+
+    // GET /api/views - Retrieves all students (as View objects)
     @GetMapping
-    public List<View> getAllStudents() {
+    public List<View> getAllViews() {
         return repository.findAll();
     } 
     
+    // GET /api/views/{id} - Retrieves a single student by ID
     @GetMapping("/{id}")
-    public ResponseEntity<View> getStudentById(@PathVariable int id) {
+    public ResponseEntity<View> getViewById(@PathVariable int id) {
         return repository.findById(id)
-                .map(student -> ResponseEntity.ok().body(student))
+                .map(view -> ResponseEntity.ok().body(view)) // changed 'student' to 'view' for clarity
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    @PostMapping("/add-view")
-    public String addStudent(@RequestBody View student) {
-        repository.save(student);
-        return "Student added successfully";
+    // POST /api/views - Adds a new student (as View object)
+    // FIX: Removed the non-standard "/add-view" path segment
+    @PostMapping
+    public ResponseEntity<String> addView(@RequestBody View view) {
+        repository.save(view);
+        return new ResponseEntity<>("Student added successfully", HttpStatus.CREATED);
     }
 
-    @PostMapping("/edit/{id}")
-    public String updateStudent(@PathVariable int id, @RequestBody View updatedStudent) {
-        View student = repository.findById(id).orElse(null);
-        if (student == null) {
-            return "Student not found";
+    // PUT /api/views/{id} - Updates an existing student
+    // FIX: Changed @PostMapping to @PutMapping to follow standard REST convention
+    @PutMapping("/{id}")
+    public ResponseEntity<String> updateView(@PathVariable int id, @RequestBody View updatedView) {
+        Optional<View> viewOptional = repository.findById(id);
+        
+        if (!viewOptional.isPresent()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Student not found");
         }
         
-        student.setFirstName(updatedStudent.getFirstName());
-        student.setLastName(updatedStudent.getLastName());
-        student.setDateOfBirth(updatedStudent.getDateOfBirth());
-        student.setYearOfRegistration(updatedStudent.getYearOfRegistration());
-        student.setAddressDetails(updatedStudent.getAddressDetails());
-        student.setContactDetails(updatedStudent.getContactDetails());
-        student.setStream(updatedStudent.getStream());
+        View view = viewOptional.get();
+        
+        // Update fields
+        view.setFirstName(updatedView.getFirstName());
+        view.setLastName(updatedView.getLastName());
+        view.setDateOfBirth(updatedView.getDateOfBirth());
+        view.setYearOfRegistration(updatedView.getYearOfRegistration());
+        view.setAddressDetails(updatedView.getAddressDetails());
+        view.setContactDetails(updatedView.getContactDetails());
+        view.setStream(updatedView.getStream());
 
-        repository.save(student);
-        return "Student updated successfully";
+        repository.save(view);
+        return ResponseEntity.ok("Student updated successfully");
     }
     
-    
-    
+    // DELETE /api/views/{id} - Deletes a student
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteStudent(@PathVariable int id) {
+    public ResponseEntity<String> deleteView(@PathVariable int id) {
         if (repository.existsById(id)) {
             repository.deleteById(id);
             return ResponseEntity.ok("Student deleted");
@@ -79,6 +90,7 @@ public class ViewController {
         }
     }
     
+    // GET /api/views/export-pdf - PDF Export functionality
     @GetMapping("/export-pdf")
     public ResponseEntity<byte[]> exportToPDF() {
         try {
@@ -128,5 +140,4 @@ public class ViewController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
-
 }
