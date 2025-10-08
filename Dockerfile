@@ -1,4 +1,7 @@
 FROM eclipse-temurin:17-jdk-jammy AS build
+RUN apt-get update && 
+apt-get install -y maven && 
+rm -rf /var/lib/apt/lists/*
 WORKDIR /app
 COPY pom.xml .
 RUN --mount=type=cache,target=/root/.m2 mvn dependency:go-offline -B
