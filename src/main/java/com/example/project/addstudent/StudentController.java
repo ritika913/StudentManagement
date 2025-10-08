@@ -20,20 +20,20 @@ public class StudentController {
         return studentRepository.findAll();
     }
 
-    // 2. POST Endpoint: Adds a new student (Your existing code)
+    // 2. POST Endpoint: Adds a new student (Your existing working code)
     @PostMapping("/add")
     public ResponseEntity<Map<String, Object>> addStudent(@RequestBody Student student) {
         Student savedStudent = studentRepository.save(student);
         Map<String, Object> response = new HashMap<>();
         response.put("id", savedStudent.getId());
-        return new ResponseEntity<>(response, HttpStatus.CREATED);
+        // Returning 201 Created status
+        return new ResponseEntity<>(response, HttpStatus.CREATED); 
     }
 
     // 3. PUT Endpoint: Updates an existing student
-    // FIX: Uses 'Integer' for the ID path variable to avoid the 'Long' mismatch error.
     @PutMapping("/{id}")
     public ResponseEntity<Student> updateStudent(
-        @PathVariable **Integer** id, 
+        @PathVariable Integer id, // Corrected: Removed ** around Integer
         @RequestBody Student studentDetails) {
 
         // 1. Find the existing student by ID
@@ -42,7 +42,7 @@ public class StudentController {
         if (studentOptional.isPresent()) {
             Student existingStudent = studentOptional.get();
 
-            // 2. Update the fields of the existing student with the new details
+            // 2. Update the fields of the existing student
             existingStudent.setFirstName(studentDetails.getFirstName());
             existingStudent.setLastName(studentDetails.getLastName());
             existingStudent.setDateOfBirth(studentDetails.getDateOfBirth());
@@ -62,9 +62,9 @@ public class StudentController {
         }
     }
     
-    // Optional: Add a DELETE endpoint for full CRUD functionality
+    // 4. DELETE Endpoint
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteStudent(@PathVariable **Integer** id) {
+    public ResponseEntity<Void> deleteStudent(@PathVariable Integer id) { // Corrected: Removed ** around Integer
         if (studentRepository.existsById(id)) {
             studentRepository.deleteById(id);
             return new ResponseEntity<>(HttpStatus.NO_CONTENT); // 204 No Content
