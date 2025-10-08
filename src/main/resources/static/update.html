@@ -260,7 +260,7 @@
 
 	     if (getCookie("auth") !== "true") {
 			alert('Please login first!');
-	       window.location.href = "login.html"; 
+	       window.location.href = "index.html"; 
 	     }
 		 
 		 function logout() {
@@ -268,14 +268,14 @@
 		     const name = cookie.split("=")[0].trim();
 		     document.cookie = name + "=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
 		   });
-		   window.location.href = "login.html";
+		   window.location.href = "index.html";
 		 }
 
     const urlParams = new URLSearchParams(window.location.search);
     const studentId = urlParams.get('id');
 
     if (studentId) {
-      fetch(`http://localhost:8080/api/students/${studentId}`)
+      fetch(`/api/students/${studentId}`)
         .then(res => res.json())
         .then(student => {
           document.getElementById('firstName').value = student.firstName;
