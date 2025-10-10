@@ -303,7 +303,7 @@
       };
 
       fetch(`http://localhost:8080/api/views/edit/${studentId}`, {
-        method: 'POST',
+        method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(student)
       })
