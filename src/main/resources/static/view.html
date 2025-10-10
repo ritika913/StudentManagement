@@ -212,7 +212,7 @@
 	
     async function fetchStudents() {
       try {
-        const response = await fetch("/api/students");
+        const response = await fetch("/api/views");
         if (!response.ok) throw new Error("Failed to fetch students");
 
         const students = await response.json();
@@ -244,7 +244,7 @@
 
     function deleteStudent(id) {
       if (confirm("Are you sure you want to delete this student?")) {
-        fetch(`/api/students/${id}`, {
+        fetch(`/api/views/${id}`, {
           method: 'DELETE'
         })
         .then(res => {
@@ -260,7 +260,7 @@
 
 	  async function downloadPDF() {
 	    try {
-	      const response = await fetch("/api/students/export-pdf");
+	      const response = await fetch("/api/views/export-pdf");
 
 	      if (!response.ok) {
 	        throw new Error("Failed to download PDF");

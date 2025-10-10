@@ -275,7 +275,7 @@
     const studentId = urlParams.get('id');
 
     if (studentId) {
-      fetch(`/api/students/${studentId}`)
+      fetch(`/api/views/${studentId}`)
         .then(res => res.json())
         .then(student => {
           document.getElementById('firstName').value = student.firstName;
@@ -302,7 +302,7 @@
         stream: document.getElementById('stream').value
       };
 
-      fetch(`http://localhost:8080/api/students/edit/${studentId}`, {
+      fetch(`http://localhost:8080/api/views/edit/${studentId}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(student)
