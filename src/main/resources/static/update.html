@@ -302,7 +302,7 @@
         stream: document.getElementById('stream').value
       };
 
-      fetch(`http://localhost:8080/api/views/edit/${studentId}`, {
+      fetch(`/api/views/edit/${studentId}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(student)
